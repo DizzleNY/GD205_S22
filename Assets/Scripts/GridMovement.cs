@@ -6,9 +6,11 @@ public class GridMovement : MonoBehaviour
 {
 
     public Vector3 fwd, Right, Back, Left, Up, Down;
-    public Transform hazard, key;
+    public Transform hazard, key, door, newRoom, oldRoom;
     Vector3 startPos;
     public bool hasKey;
+    public AudioSource speaker;
+    public AudioClip hazardClip;
 
     // Start is called before the first frame update
     void Start() //like setup
@@ -65,10 +67,23 @@ public class GridMovement : MonoBehaviour
         if (hazard.position == transform.position)
         {
             transform.position = startPos;
+            speaker.PlayOneShot(hazardClip, .7f);
 
         }
 
         if (key.position == transform.position)
+        {
             hasKey = true;
+            key.gameObject.SetActive(false);
+
+        }
+
+        if (door.position == transform.position && hasKey)
+        {
+            newRoom.gameObject.SetActive(true);
+            door.gameObject.SetActive(false);
+            oldRoom.gameObject.SetActive(false);
+            
+        }
     }
 }
